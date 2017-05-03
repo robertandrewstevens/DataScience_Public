@@ -1,0 +1,52 @@
+---
+title: "DSiR00"
+author: "Robert A. Stevens"
+date: "March 8, 2016"
+output: html_document
+---
+
+**TODO:**
+
+1. Finish outline
+
+2. Add R code
+
+3. Run R code and check
+
+4. Do exercises
+
+*Data Science in R: A Case Studies Approach to Computational Reasoning and Problem Solving*
+
+by Deborah Nolan and Duncan Temple Lang
+
+http://www.rdatasciencecases.org
+
+# Chapter 5. Strategies for Analyzing a 12 Gigabyte Data Set: Airline Flight Delays 
+
+by Michael Kane
+
+## 5.1 Introduction
+
+### 5.1.1 Computational Topics
+
+## 5.2 Acquiring the Airline Data Set
+
+## 5.3 Computing with Massive Data: Getting Flight Delay Counts
+
+### 5.3.1 The R Programming Environment
+
+### 5.3.2 The UNIX Shell
+
+### 5.3.3 An SQL Database with R
+
+### 5.3.4 The big memory Package with R
+
+## 5.4 Explanations Using Parallel Computing:  The Distribution of Flight Delays
+
+### 5.4.1 Wring a Parallelizable Loop with foreach
+
+### 5.4.2 Using the Split-Apply-Combine Approach for Better Performance
+
+### 5.4.3 Using Split-Apply-Combine to Find the Best Time to Fly
+
+## 5.5 From Exploration to Model:  Do Older Plans Suffer Greater Delays?

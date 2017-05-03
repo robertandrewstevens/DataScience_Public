@@ -1,0 +1,610 @@
+---
+title: "DSiR01"
+author: "Robert A. Stevens"
+date: "March 8, 2016"
+output: html_document
+---
+
+**TODO:**
+
+1. Finish adding R code
+
+2. Run R code and check
+
+3. Do exercises
+
+*Data Science in R: A Case Studies Approach to Computational Reasoning and Problem Solving*
+
+by Deborah Nolan and Duncan Temple Lang
+
+http://www.rdatasciencecases.org
+
+# Chapter 1. Predicting Location via Indoor Positioning Systems 
+
+by Deborah Nolan and Duncan Temple Lang
+
+## 1.1 Introduction
+
+### 1.1.1 Computational Topics
+
+## 1.2 The Raw Data
+
+Figure 1.1: Floor Plan of the Test Environment. In this floor plan, the 6 fixed access points are denoted by black square markers, the offline/training data were collected at the locations marked by grey dots, and the online measurements were recorded at randomly selected points indicated with black dots. The grey dots are spaced one meter apart.
+
+```{r comment=NA}
+options(digits = 2)
+setwd("~/GitHub/DataScience")
+#txt = readLines("Data/offline.final.trace.txt")
+txt <- readLines("offline.final.trace.txt")
+```
+
+```{r comment=NA}
+sum(substr(txt, 1, 1) == "#")
+```
+
+```{r comment=NA}
+length(txt)
+```
+
+### 1.2.1 Processing the Raw Data
+
+```{r comment=NA}
+strsplit(txt[4], ";")[[1]]
+```
+
+```{r comment=NA}
+unlist(lapply(strsplit(txt[4], ";")[[1]],
+              function(x)
+                sapply(strsplit(x, "=")[[1]], strsplit, ",")))
+```
+
+```{r comment=NA}
+tokens <- strsplit(txt[4], "[;=,]")[[1]]
+```
+
+```{r comment=NA}
+tokens[1:10]
+```
+
+```{r comment=NA}
+tokens[c(2, 4, 6:8, 10)]
+```
+
+```{r comment=NA}
+tokens[-(1:10)]
+```
+
+```{r comment=NA}
+tmp <- matrix(tokens[-(1:10)], ncol = 4, byrow = TRUE)
+mat <- cbind(matrix(tokens[c(2, 4, 6:8, 10)], 
+                    nrow = nrow(tmp),
+                    ncol = 6, 
+                    byrow = TRUE), 
+             tmp)
+```
+
+```{r comment=NA}
+dim(mat)
+```
+
+```{r comment=NA}
+processLine <- function(x) {
+  tokens <- strsplit(x, "[;=,]")[[1]]
+  tmp <- matrix(tokens[-(1:10)], ncol = 4, byrow = TRUE)
+  cbind(matrix(tokens[c(2, 4, 6:8, 10)], 
+               nrow = nrow(tmp),
+               ncol = 6, 
+               byrow = TRUE), 
+        tmp)
+}
+```
+
+```{r comment=NA}
+tmp <- lapply(txt[4:20], processLine)
+```
+
+```{r comment=NA}
+sapply(tmp, nrow)
+```
+
+```{r comment=NA}
+offline <- as.data.frame(do.call("rbind", tmp))
+dim(offline)
+```
+
+```{r comment=NA}
+lines <- txt[ substr(txt, 1, 1) != "#" ]
+tmp <- lapply(lines, processLine)
+```
+
+```{r comment=NA}
+options(error = recover, warn = 2)
+```
+
+```{r comment=NA}
+tmp <- lapply(lines, processLine)
+```
+
+```{r comment=NA}
+processLine <- function(x) {
+  tokens <- strsplit(x, "[;=,]")[[1]]
+  if (length(tokens) == 10) 
+    return(NULL)
+  tmp <- matrix(tokens[ - (1:10) ], , 4, byrow = TRUE)
+  cbind(matrix(tokens[c(2, 4, 6:8, 10)], 
+               nrow(tmp), 
+               6, 
+               byrow = TRUE), 
+        tmp)
+}
+```
+
+```{r comment=NA}
+options(error = recover, warn = 1)
+tmp <- lapply(lines, processLine)
+offline <- as.data.frame(do.call("rbind", tmp), stringsAsFactors = FALSE)
+```
+
+```{r comment=NA}
+dim(offline)
+```
+
+## 1.3 Cleaning the Data and Building a Representation for Analysis
+
+```{r comment=NA}
+names(offline) <- c("time", "scanMac", "posX", "posY", "posZ", 
+                    "orientation", "mac", "signal", "channel", "type")
+```
+
+```{r comment=NA}
+numVars <- c("time", "posX", "posY", "posZ", "orientation", "signal")
+offline[numVars] <-  lapply(offline[numVars ], as.numeric)
+```
+
+```{r comment=NA}
+offline <- offline[offline$type == "3", ]
+offline <- offline[ , "type" != names(offline) ]
+dim(offline)
+```
+
+```{r comment=NA}
+offline$rawTime <- offline$time
+offline$time <- offline$time/1000
+class(offline$time) <- c("POSIXt", "POSIXct")
+```
+
+```{r comment=NA}
+unlist(lapply(offline, class))
+```
+
+```{r comment=NA}
+summary(offline[, numVars])
+```
+
+```{r comment=NA}
+summary(sapply(offline[ , c("mac", "channel", "scanMac")], as.factor))
+```
+
+```{r comment=NA}
+offline <- offline[ , !(names(offline) %in% c("scanMac", "posZ"))]
+```
+
+### 1.3.1 Exploring Orientation
+
+```{r comment=NA}
+length(unique(offline$orientation))
+```
+
+```{r comment=NA}
+plot(ecdf(offline$orientation))
+```
+
+```{r comment=NA}
+#pdf(file = "Geo_ECDFOrientation.pdf", width = 10, height = 7)
+oldPar <- par(mar = c(4, 4, 1, 1))
+plot(ecdf(offline$orientation), pch = 19, cex = 0.3,
+     xlim = c(-5, 365), axes = FALSE,
+     xlab = "orientation", ylab = "Empirical CDF", main = "")
+box()
+axis(2)
+axis(side = 1, at = seq(0, 360, by = 45))
+par(oldPar)
+#dev.off()
+```
+
+**Figure 1.2. Emperical CDF of Orientation for the Hand-Held Device.  This emperical distribution function of orientation shows that there are 8 basic orientations that are 45 degrees apart.  We see from the stps in the function that these orientations are not exactly 45, 90, 135, etc. Also, the 0 orientation is split into the two groups, one near 0 and the other near 360.**
+
+```{r comment=NA}
+#pdf(file = "Geo_DensityOrientation.pdf", width = 10, height = 5)
+oldPar = par(mar = c(4, 4, 1, 1))
+plot(density(offline$orientation, bw = 2),  xlab = "orientation", main = "")
+par(oldPar)
+#dev.off()
+```
+
+```{r comment=NA}
+roundOrientation <- function(angles) {
+  refs <- seq(0, by = 45, length  = 9)
+  q <- sapply(angles, function(o) which.min(abs(o - refs)))
+  c(refs[1:8], 0)[q]
+}
+```
+
+```{r comment=NA}
+offline$angle <- roundOrientation(offline$orientation)
+```
+
+```{r comment=NA}
+
+```
+
+Figure 1.3: Boxplots of Orientation for the Hand-Held Device. These boxplots of the original orientation against the rounded value confirm that hte values have mapped correctly to 0, 45, 90, 135, etc. The "outliers" at the top left corner of the plot are the values near 360 that have been mapped to 0.
+
+### 1.3.2 Exploring MAC Addresses
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+Figure 1.4: Screenshot of the coffer.com Mac Address Lookup Form. The coffer.com Web site offers lookup services to find the MAC address for a vendor and vice versa.
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+
+### 1.3.3 Exploring the Position of the Hand-Held Device
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+Figure 1.5: Counts of signals detected at each position. Plotted at each location in the building is the total number of signals detected from all access points for the offline data. Ideally for each location, 110 signals were measured at 8 angles for each of 6 access points, for a total of 5280 recordings. These data include a seventh Mac address and not all signals were detected, so there are about 5500 recording at each loction.
+
+### 1.3.4 Creating a Function to Prepare the Data
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+## 1.4 Signal Strength Analysis
+
+### 1.4.1 Distribution of Signal Strength
+
+```{r comment=NA}
+
+```
+Figure 1.6: Signal Strength by Angle for Each Access Point. The boxplots in this figure represent signals for one location, which is in the uper left corner of the floor plan, i.e., x = 2 and y = 12. These boxes are organized by access point and the angle of the hand-held device. The dependence of signal strength on angle is evident at serveral of the access points, e.g., 00:14:bf:97:90 in the top right panel of the figure.
+
+```{r comment=NA}
+
+```
+
+Figure 1.7: Distribution of Signal Angle for Each Access Point. The density curves show here are for the signal strengths measure at the postion: x = 24 and y = 4. These 48 density plots represent each of the access point x angle combinations. There are roughly 110 observations in each pannel. Some look roughly normal while many others look skewed left.
+
+```{r comment=NA}
+
+```
+
+
+```{r comment=NA}
+
+```
+
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+Figure 1.8: SD of Signal Strength by Mean Signal Strength. The average and SD for the signals detected at each location-angle-access point combination are plotted against each other. The weak signals have low variability and the stronger signals have greater variability.
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+Figure 1.9: Comparison of Mean and Median Signal Strength. This smoothed scatter plot shows the difference between the mean and median signal strength for each combination of location, access point, and angle against the number of observations. These differences are close to 0 with a typical deviation of 1 to 2 dBm.
+
+### 1.4.2 The Relationship between Signal and Distance
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+Figure 1.10: Median Signal at Two Access Points and Two Angles. These four heat maps provide a smooth topographical representation of signal strength. The top two maps are for the access point 00:14:bf:b1:97:90 and the angles 0 (left) and 135 (right). The two bottom heat maps represent the signal strength for the 00:0f:a3:39:e1:c0 and the same two angles.
+
+```{r comment=NA}
+
+```
+
+
+```{r comment=NA}
+
+```
+
+
+```{r comment=NA}
+
+```
+
+
+```{r comment=NA}
+
+```
+
+
+```{r comment=NA}
+
+```
+
+Figure 1.11: Signal Strength vs. Distance to Access Point. These 48 scatter plots show the relationship between the signal strength and the distance to the access point for each of the 6 access points and 8 orientations of the device. The shape is consistent across panels showing curvature in the relationship.
+
+## 1.5 Nearest neighbor Methods to Predict Location
+
+### 1.5.1 Preparing the Test Data
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+### 1.5.2 Choice of Orientation
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+### 1.5.3 Finding the Nearest Neighbors
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+Figure 1.12: Floor Plan with Predicted and Actual Locations. The red line segments shown in the floor plan connect the test locations (black dots) to their predicted locations (asterisks). The top plot shows thepredictions for k = 1 and the bottome plot is for k = 3 nearest neighbors. In this model, we use as training data the average signal strength from each of the 166 offline locations (grey dots) to the 6 access points (black squares) for the 3 closest angles to the angle at which the test data was measured.
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+### 1.5.4 Cross-Validation and Choice of k
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+Figure 1.13: Cross Validated Selection of k. This line plot shows the sum of square errors as a function of the number of neighbors used in predicting the location of a new obseravation. The sums of squared errors are obtained via corss-validation of the offline data.
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+```{r comment=NA}
+
+```
+
+## 1.6 Exercises
+
+Q.1
+
+Q.2
+
+Q.3
+
+Q.4
+
+Q.5
+
+Q.6
+
+Q.7
+
+Q.8
+
+Q.9
+
+Q.10
+
+Q.11
+
+Q.12
+
+Q.13
+
+Q.14
+
+Q.15

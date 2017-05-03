@@ -1,0 +1,50 @@
+---
+title: "DSiR09”
+author: "Robert A. Stevens"
+date: "March 8, 2016"
+output: html_document
+---
+
+**TODO:**
+
+1. Finish outline
+
+2. Add R code
+
+3. Run R code and check
+
+4. Do exercises
+
+*Data Science in R: A Case Studies Approach to Computational Reasoning and Problem Solving*
+
+by Deborah Nolan and Duncan Temple Lang
+
+http://www.rdatasciencecases.org
+
+# Chapter 9. Simulating Blackjack Hadley Wickham
+
+## 9.1 Introduction
+
+### 9.1.1 Computational Topics
+
+## 9.2 Blackjack Basics
+
+### 9.2.1 Testing Functions
+
+## 9.3 Playing a Hand of Blackjack
+
+### 9.3.1 Creating Functions for the Player’s Actions
+
+## 9.4 Strategies for Playing
+
+### 9.4.1 Developing the Optimal Strategy
+
+## 9.5 Playing Many Games
+
+## 9.6 A More Accurate Card Dealer Shoe
+
+## 9.7 Counting Cards
+
+## 9.8 Putting It All Together
+
+## 9.9 Exercises

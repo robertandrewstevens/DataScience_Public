@@ -1,0 +1,13 @@
+---
+title: "DS_links"
+author: "Robert A. Stevens"
+date: "February 20, 2017"
+output: html_document
+---
+
+# Data Science Links
+
+http://jamiehall.cc/post/3-data-science-skills-that-economists-can-use
+
+3 data science skills that economists can use
+

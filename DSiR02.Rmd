@@ -1,0 +1,744 @@
+---
+title: "DSiR00"
+author: "Robert A. Stevens"
+date: "March 8, 2016"
+output: html_document
+---
+
+**TODO:**
+
+1. Finish outline
+
+2. Add R code
+
+3. Run R code and check
+
+4. Do exercises
+
+*Data Science in R: A Case Studies Approach to Computational Reasoning and Problem Solving*
+
+by Deborah Nolan and Duncan Temple Lang
+
+http://www.rdatasciencecases.org
+
+## Chapter 2. Modeling Runners’ Times in the Cherry Blossom Race 
+
+by Daniel Kaplan and Deborah Nolan
+
+## 2.1 Introduction
+
+Figure 2.1: Screen Shot of Cherry Blossom Run Web site. This page contains links to each year's race results. The year 1999 is the earliest for which they provide data. Men's and women's results are listed separately.
+
+### 2.1.1 Computational Topics
+
+## 2.2 Reading Tables of Race Results into R
+
+Figure 2.2: Screen Shot of the 2012 Male Results. This screenshot shows the results, in race order, for mean competing in the 2012 Cherry Blossom 10 Mile Run. Notice that both 5-mile times and net times are provided. We know that the Time column is net time because it is so indicated in the header of the table.
+
+Figure 2.3: Screen Shot of Men's 2011 Race Results. This screenshot shows the results, in race order, for men competing in the 2011 Cherry Blossom road race. Notice that in 2011, 3 times are recorded - the time to compete the first 5 miles and the gun and net times for the full run. In contrast, the results from 2012 do not provide gun time.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+```{r, comment=NA}
+
+```
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+## 2.3 Data Cleaning and Reformatting Variables
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.4: Box Plot of Age by Year. These side-by-side boxplots of age for each race year show a few problems with the data for 2003 and 2006. The runners in these years are unusually young.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.5: Box Plot of Age by Year. These side-by-side boxplots of age for each race year show a reasonable age distribution. For example, the lower quartile for all years range between 29 and 32. The problems indentified earlier for 2003 and 2006 have been addressed.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+## 2.4 Exploring the Run Time for All Male Runners
+
+```{r, comment=NA}
+
+```
+
+Figure 2.6: Default Scatter Plot for Run Time vs. Age for Male Runners. This plot demonstrated that a simple plot of run time by age for the 70,000 male runners leads to such severe overplotting that the shape of the data is not descernible.
+
+### 2.4.1 Making Plots with Many Observations
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.7: Revised Scatter Plot of Male Runners. This plot revises the simple scatter plot of Figure 2.6 by changing the plotting symbol from a circle to a disk, reducing the size of the plotting symbol, using a transparent color for the disk, and adding a small amount of random noise to age. Now we see the shape of the high density region containing more of the runners and the lidght upward trend of time with increasing age.
+
+```{r, comment=NA}
+
+```
+
+Figure 2.8: Smoothing Scatter Plot of Male Runners Race Times vs. Age. This plot offers an alternative to the scatter plot of Figure 2.7 that uses jittering and transparent color to ameliorate the over plotting. Here there is no need to jitter age because the smoothing action essentially does that for us by spreading an individual runner's (age, run time) pair over a small region. The shape of the high density region has a very similar shape to the earlier plot.
+
+Figure 2.9: Side-by-Side Boxplots of Male Runners' Run Time vs. Age. This sequence of boxplots shows the quartiles of time for men grouped into 10-year age intervals. As age increases, all the quartiles increase. However, the box becomes asymmetrical with age, which indicates that the upper quartile increases faster than the median and lower quartile.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+### 2.4.2 Fitting Models to Average Performance
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.10: Residual Plot from Fitting a Simple Linear Model of Performance to Age. Shown here is a smoothing scatter plot of the residuals from the fit of the simple linear model of run time to age for male runners who are 15 to 80 years old. Overlaid on the scatter plot are two curves. The "curve" in purple is a solid horizontal line at y = 0. The green dashed curve is a local smooth of the residuals.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.11: Piecewise Linear and Loess Curves Fitted to Run Time vs. Age. Here we have plotted the fitted curves from loess() and a piecewise linear model with hinges at 30, 40, 50, and 60. These curves follow each other quite closely. However, there appears to be more curvature in the over 50 loess fit that is not captured in the piecewise linear fit.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+### 2.4.3 Cross-Sectional Data and Covariates
+
+Figure 2.12: Line Plot of the Number of Male Runners by Year. This plot shows that the number of male runners in the Cherry Blossom 10-mile race has more that doubled from 1999 to 2012.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.13: Density Curves for the Age of Male Runners in 1999 and 2012. These two density curves have quite different shapes. The 1999 male runners have a broad, nearly flat mode where they are roughly evenly distributed in age from 28 to 45. In contrast, the 2012 runners are younger with a sharper peak just under 30 years and a skew right distribution.
+
+```{r, comment=NA}
+
+```
+
+Figure 2.14: Loess Curves Fit to Performance for 1999 and 2012 Male Runners. This loess fit of run time to age for 2012 malre runners sits above the fit for 1999 male runners. The gap between these curves is about 5 minutes for most years. The exception is in the late 40s to early 60s where the curves are within 2-3 minutes of each other. Both curves have a similar shape. 
+
+Figure 2.15: Difference between Loess Curves. This line plot shows the diffence between the predicted run time for 2012 and 1999 male runners.
+
+
+## 2.5 Constructing a Record for an Individual Runner across Years
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.16: Screen Shot of One Runner's Web Page of Race Results. This Web page at http://storage.athlinks.com contains the race results of one runner who participated in the Cherry Blossom run for 12 of the 14 years for which we have data. Notice that his fastest time was for his most recent run in 2012 where he completed the race in under 85 minutes. He was 45 at that time. Also, his slowest time was 123 minutes in 2002 at the age of 35.
+
+## 2.6 Modeling the Change in Running Time for Individuals
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.17: Run Times for Multiple Races. These line plots show the times for male runners who completed at least 8 Cherry Blossom races. Each set of connected segments correpsonds to the run times for one athlete. Looking at all line plots, we see a similar shape to the scatter plot in Figure 2.7, i.e., an upward curve with age. However, we can also see how an individual's preformance changes. For example, many middle-aged runners show a sharp increase in run time with age but that is not the case for all. Some of them improve and others change more slowly.
+
+```{r, comment=NA}
+
+```
+
+Figure 2.18: Linear Fits of Run Time to Age for Indiviudal Runners. Here we have augmented the bottom-right line plot from Figure 2.17 with the least squares fit of run time for each of the athletes. These are the 30 or so black dashed line segments plotted on each of the individual runner's times series.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+Figure 2.19: Coefficients from Logitudinal Analysis of Athletes. This scatter plot displays the slope of the fitted line to each of the 300+ runners who competed in at least 8 Cherry Blossom road races. A negative coefficient indicates the runner is getting faster as he ages. The plot includes a least squares fitted line and a loess fitted curve. Notice that nearly all of the coefficients for those over 50 are positive. The typical size of this coefficient for a 50-year old is about one minute per year.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+## 2.7 Scraping Race Results form the Web
+
+Figure 2.20: Screen Shot of the Source for Men's 2012 Cherry Blossom Results. This screen shot is of the HTML source for the male results for the 2012 Cherry Blossom road race. While the format is not quite the same as the female results for 2011 (see Figure 2.21), both are plain text tables withing \<pre\> notes in an HTML document.
+
+Figure 2.21: Screen Shot of the Source for Women's 2011 Cherry Blossom Results. This screen shot is of the HTML source for the female resutts for the 2011 Cherry Blossom road race. Notice that times given are for the midpoint of the race (5 Mile) and for two finish times (Time and Net Time). Also notice the leftmost column labeled S. While the format is different than the male results for 2012, both are plain text tables within \<pre\> nodes in an HTML document.
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+```{r, comment=NA}
+
+```
+
+## 2.8 Exercises
+
+Q.1
+
+Q.2
+
+Q.3
+
+Q.4
+
+Q.5
+
+Q.6
+
+Q.7
+
+Q.8
+
+Q.9
+
+Q.10
+
+Q.11
+
+Q.12
+
+Q.13
+
+Q.14
+
+Q.15
+
+Q.16
+
+Q.17
+
+Q.18
+
+Q.19

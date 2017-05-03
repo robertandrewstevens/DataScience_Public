@@ -1,0 +1,50 @@
+---
+title: "DSiR00"
+author: "Robert A. Stevens"
+date: "March 8, 2016"
+output: html_document
+---
+
+**TODO:**
+
+1. Finish outline
+
+2. Add R code
+
+3. Run R code and check
+
+4. Do exercises
+
+*Data Science in R: A Case Studies Approach to Computational Reasoning and Problem Solving*
+
+by Deborah Nolan and Duncan Temple Lang
+
+http://www.rdatasciencecases.org
+
+# Chapter 4. Processing Robot and Sensor Log Files: Seeking a Circular Target 
+
+by Samuel E. Buttrey, Timothy H. Chung, James N. Eagle, and Duncan W. Temple Lang
+
+## 4.1 Description
+
+### 4.1.1 Computational Topics
+
+## 4.2 The Data
+
+### 4.2.1 Reading an Entire Log File
+
+### 4.2.2 Exploring Log Files
+
+### 4.2.3 Visualizing the Path
+
+### 4.2.4 Exploring a “Look”
+
+### 4.2.5 The Error Distribution for Range Values
+
+## 4.3 Detecting a Circular Target
+
+### 4.3.1 Connecting Segments Behind the Robot
+
+### 4.3.2 Determining If a Segment Corresponds to a Circule
+
+## 4.4 Detecting the Target with Streaming Data in Real Time
